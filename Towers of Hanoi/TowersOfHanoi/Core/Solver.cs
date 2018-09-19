@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using TowersOfHanoi.Common;
 using TowersOfHanoi.DataBase;
+using TowersOfHanoi.Models;
 
 namespace TowersOfHanoi.Core
 {
@@ -8,6 +10,7 @@ namespace TowersOfHanoi.Core
     {
         private int previusElement = 0;
         private List<Stack<int>> pegs = new List<Stack<int>>();
+        private Step step = new Step();
 
         private const int moveLeft = -1;
         private const int moveRight = 1;
@@ -48,33 +51,75 @@ namespace TowersOfHanoi.Core
                 return;
             }
 
-            if (LocalDataBase.Steps.Count == 0)
+            if (LocalDataBase.Steps == null)
             {
                 previusElement = 1;
             }
 
-            int bigesstElement = FindBiggest();
-            int newIndex = CanMoveOnPosition(moveRight, bigesstElement);
+            int fromIndex = FindBiggest();
+            int newIndex = CanMoveOnPosition(moveRight, fromIndex);
 
-            if (newIndex >= 0)
+            if (newIndex < 0)
             {
-                pegs[newIndex].Push(pegs[bigesstElement].Pop()); // check if it previusElement???
+                fromIndex = FindSmallest();
+                newIndex = CanMoveOnPosition(moveRight, fromIndex);
             }
 
+            this.step.Source = (Peg)fromIndex;
+            this.step.Target = (Peg)newIndex;
+            LocalDataBase.Steps.Add(this.step);
+
+            pegs[newIndex].Push(pegs[fromIndex].Pop());
+
+            MoveRight();
+
+        }
+
+        private int FindSmallest()
+        {
+            int left = 0, mid = 0, right = 0;
+
+            if (pegs[0].Count > 0)
+            {
+                left = pegs[0].Peek();
+            }
+            if (pegs[1].Count > 0)
+            {
+                mid = pegs[1].Peek();
+            }
+            if (pegs[2].Count > 0)
+            {
+                right = pegs[2].Peek();
+            }
+
+            int reference = Math.Min(Math.Min(left, mid), right);
+
+            if (reference == left)
+            {
+                return 0;
+            }
+            if (reference == mid)
+            {
+                return 1;
+            }
+
+            return 2;
         }
 
         private int CanMoveOnPosition(int direction, int fromPosition)
         {
             int newPosition = -1;
-            for (int i = fromPosition; i < n + fromPosition; i += direction)
+            int length = pegs.Count;
+
+            for (int i = fromPosition; i < length + fromPosition; i += direction)
             {
-                if (pegs[(i + 1) % n].Count == 0)
+                if (pegs[(i + 1) % length].Count == 0)
                 {
-                    return (i + 1) % n;
+                    return (i + 1) % length;
                 }
-                else if (pegs[fromPosition].Peek() < pegs[(i + 1) % n].Peek())
+                else if (pegs[fromPosition].Peek() < pegs[(i + 1) % length].Peek())
                 {
-                    return (i + 1) % n;
+                    return (i + 1) % length;
                 }
             }
 

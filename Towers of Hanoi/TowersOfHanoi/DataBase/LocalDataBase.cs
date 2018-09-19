@@ -7,7 +7,7 @@ namespace TowersOfHanoi.DataBase
     public static class LocalDataBase
     {
         private static List<Step> steps = new List<Step>();
-        private static int diskCounts = Input.DiscsCount ;
+        private static int diskCounts = Input.DiscsCount;
 
         public static int DiskCounts
         {
@@ -17,7 +17,7 @@ namespace TowersOfHanoi.DataBase
 
         public static List<Step> Steps
         {
-            get => new List<Step>(steps);
+            get => steps;
             set => steps = value;
         }
     }
