@@ -25,26 +25,21 @@ namespace TowersOfHanoi.Core
             pegs.Add(new Stack<int>());
         }
 
-        public void Solve()
+        public void Execute()
         {
             PreparePegLeft();
 
             if (n % 2 != 0)
             {
-                MoveLeft();
+                Solve(moveLeft);
             }
             else
             {
-                MoveRight();
+                Solve(moveRight);
             }
         }
 
-        private void MoveLeft()
-        {
-
-        }
-
-        private void MoveRight()
+        private void Solve(int direction)
         {
             if (pegs[2].Count == n)
             {
@@ -57,12 +52,12 @@ namespace TowersOfHanoi.Core
             }
 
             int fromIndex = FindBiggest();
-            int newIndex = CanMoveOnPosition(moveRight, fromIndex);
+            int newIndex = CanMoveOnPosition(direction, fromIndex);
 
             if (newIndex < 0)
             {
                 fromIndex = FindSmallest();
-                newIndex = CanMoveOnPosition(moveRight, fromIndex);
+                newIndex = CanMoveOnPosition(direction, fromIndex);
             }
 
             this.step.Source = (Peg)fromIndex;
@@ -73,8 +68,32 @@ namespace TowersOfHanoi.Core
 
             pegs[newIndex].Push(pegs[fromIndex].Pop());
 
-            MoveRight();
+            Solve(direction);
 
+        }
+
+        private int CanMoveOnPosition(int direction, int fromPosition)
+        {
+            int newPosition = -1;
+            int length = pegs.Count;
+
+            for (int i = 0; i < length; i++)
+            {
+                int nextIndex = Math.Abs(fromPosition + direction) % length;
+                if (pegs[nextIndex].Count == 0)
+                {
+                    return nextIndex;
+                }
+                else if (pegs[fromPosition].Peek() < pegs[nextIndex].Peek())
+                {
+                    return nextIndex;
+                }
+
+                direction += direction;
+            }
+
+
+            return newPosition;
         }
 
         private int FindSmallest()
@@ -108,26 +127,6 @@ namespace TowersOfHanoi.Core
             }
 
             return 2;
-        }
-
-        private int CanMoveOnPosition(int direction, int fromPosition)
-        {
-            int newPosition = -1;
-            int length = pegs.Count;
-
-            for (int i = fromPosition; i < length + fromPosition; i += direction)
-            {
-                if (pegs[(i + 1) % length].Count == 0)
-                {
-                    return (i + 1) % length;
-                }
-                else if (pegs[fromPosition].Peek() < pegs[(i + 1) % length].Peek())
-                {
-                    return (i + 1) % length;
-                }
-            }
-
-            return newPosition;
         }
 
         private int FindBiggest()
