@@ -3,15 +3,15 @@ using TowersOfHanoi.Globals;
 
 namespace TowersOfHanoi.Core
 {
-    public class Input
+    public static class Input
     {
         private static int discsCount = 0;
 
-        public int DiscsCount
+        public static int DiscsCount
         {
             get
             {
-                return this.discsCount;
+                return discsCount;
             }
             private set
             {
@@ -21,17 +21,17 @@ namespace TowersOfHanoi.Core
                 if (value > Constants.MAX_PEGS)
                     throw new ArgumentException($"Input number must be between {Constants.MIN_PEGS} and {Constants.MAX_PEGS}. Currernt value is {value}");
 
-                this.discsCount = value;
+                discsCount = value;
             }
         }
 
-        public void ReadInt()
+        public static void ReadInt()
         {
             Console.WriteLine($"Input number between {Constants.MIN_PEGS} and {Constants.MAX_PEGS}:");
 
             int n = int.Parse(Console.ReadLine());
 
-            this.DiscsCount = n;
+            DiscsCount = n;
         }
     }
 }

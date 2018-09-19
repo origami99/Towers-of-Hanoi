@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using TowersOfHanoi.Core;
 using TowersOfHanoi.Models;
 
 namespace TowersOfHanoi.DataBase
 {
     public static class LocalDataBase
     {
-        private static List<Step> steps;
-        private static int diskCounts;
+        private static List<Step> steps = new List<Step>();
+        private static int diskCounts = Input.DiscsCount ;
 
         public static int DiskCounts
         {
