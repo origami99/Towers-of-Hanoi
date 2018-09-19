@@ -10,7 +10,7 @@ namespace TowersOfHanoi
 
             var test = new Solver(4);
 
-            test.Solve();
+            test.Execute();
             
         }
     }
