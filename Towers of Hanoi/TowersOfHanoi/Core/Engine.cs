@@ -1,4 +1,5 @@
 ﻿using System;
+using TowersOfHanoi.Globals;
 
 namespace TowersOfHanoi.Core
 {
@@ -27,13 +28,24 @@ namespace TowersOfHanoi.Core
 
         public void Start()
         {
-            // Set intial settings
+            IntilizeSettings();
 
-            input.Get();
+            input.ReadInt();
 
             // 1. Invokes the puzzle solver
             
             // 2. Invokes the visualisation
+        }
+
+        public void IntilizeSettings()
+        {
+            Console.Title = "Towers of Hanoi";
+
+            Console.WindowWidth = Constants.CONSOLE_WIDTH;
+            Console.BufferWidth = Constants.CONSOLE_WIDTH;
+
+            Console.WindowHeight = Constants.CONSOLE_HEIGHT;
+            Console.BufferHeight = Constants.CONSOLE_HEIGHT;
         }
     }
 }
