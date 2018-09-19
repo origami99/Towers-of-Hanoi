@@ -7,11 +7,9 @@ namespace TowersOfHanoi.Core
     public class Engine
     {
         private static Engine instance;
-        private ViewConsole visualisation;
 
         private Engine()
         {
-            this.visualisation = new ViewConsole();
         }
 
         public static Engine Instance
@@ -34,9 +32,11 @@ namespace TowersOfHanoi.Core
             Input.ReadInt();
 
             // 1. Invokes the puzzle solver
+            var test = new Solver(4);
+            test.Solve();
 
             // 2. Invokes the visualisation
-            visualisation.Print();
+            ViewConsole.Print();
         }
 
         public void IntilizeSettings()
