@@ -27,6 +27,8 @@ namespace TowersOfHanoi.Core
 
         public void Start()
         {
+            // Set intial settings
+
             input.Get();
 
             // 1. Invokes the puzzle solver
