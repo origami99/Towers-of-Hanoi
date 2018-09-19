@@ -53,7 +53,7 @@ namespace TowersOfHanoi.Core
 
             if (LocalDataBase.Steps == null)
             {
-                previusElement = 1;
+                previusElement = 0;
             }
 
             int fromIndex = FindBiggest();
@@ -69,6 +69,8 @@ namespace TowersOfHanoi.Core
             this.step.Target = (Peg)newIndex;
             LocalDataBase.Steps.Add(this.step);
 
+            previusElement = newIndex;
+
             pegs[newIndex].Push(pegs[fromIndex].Pop());
 
             MoveRight();
@@ -77,17 +79,19 @@ namespace TowersOfHanoi.Core
 
         private int FindSmallest()
         {
-            int left = 0, mid = 0, right = 0;
+            int left = int.MaxValue,
+                mid = int.MaxValue,
+                right = int.MaxValue;
 
-            if (pegs[0].Count > 0)
+            if (previusElement != 0 && pegs[0].Count > 0)
             {
                 left = pegs[0].Peek();
             }
-            if (pegs[1].Count > 0)
+            if (previusElement != 1 && pegs[1].Count > 0)
             {
                 mid = pegs[1].Peek();
             }
-            if (pegs[2].Count > 0)
+            if (previusElement != 2 && pegs[2].Count > 0)
             {
                 right = pegs[2].Peek();
             }
@@ -128,17 +132,17 @@ namespace TowersOfHanoi.Core
 
         private int FindBiggest()
         {
-            int left = 0, mid = 0, right = 0;
+            int left = int.MinValue, mid = int.MinValue, right = int.MinValue;
 
-            if (pegs[0].Count > 0)
+            if (previusElement != 0 && pegs[0].Count > 0)
             {
                 left = pegs[0].Peek();
             }
-            if (pegs[1].Count > 0)
+            if (previusElement != 1 && pegs[1].Count > 0)
             {
                 mid = pegs[1].Peek();
             }
-            if (pegs[2].Count > 0)
+            if (previusElement != 2 && pegs[2].Count > 0)
             {
                 right = pegs[2].Peek();
             }
