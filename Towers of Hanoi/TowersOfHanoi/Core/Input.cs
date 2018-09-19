@@ -5,7 +5,7 @@ namespace TowersOfHanoi.Core
 {
     public class Input
     {
-        private int discsCount = 0;
+        private static int discsCount = 0;
 
         public int DiscsCount
         {
