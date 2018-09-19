@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TowersOfHanoi.Models;
 
 namespace TowersOfHanoi.DataBase
 {
-    public class LocalDataBase
+    public static class LocalDataBase
     {
-        private List<Step> steps;
-        private int diskCounts;
+        private static List<Step> steps;
+        private static int diskCounts;
 
-        public int DiskCounts { get => diskCounts; set => diskCounts = value; }
-        public List<Step> Steps { get => new List<Step>(this.steps); set => steps = value; }
+        public static int DiskCounts { get => diskCounts; set => diskCounts = value; }
+        public static List<Step> Steps { get => new List<Step>(steps); set => steps = value; }
     }
 }
