@@ -33,7 +33,7 @@ namespace TowersOfHanoi.Core
 
             // 1. Invokes the puzzle solver
             var test = new Solver(4);
-            test.Solve();
+            test.Execute();
 
             // 2. Invokes the visualisation
             ViewConsole.Print();
