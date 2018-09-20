@@ -13,38 +13,30 @@ namespace TowersOfHanoi.Core
         private Step step = new Step();
         private int numbOfElements;
 
-        private static Stack<int> left;
-        private static Stack<int> middle = new Stack<int>();
-        private static Stack<int> right = new Stack<int>();
-
         public SolverRecursive(int n)
         {
             this.numbOfElements = n;
-            left = new Stack<int>(Enumerable.Range(1, numbOfElements).Reverse());
         }
 
         public void Execute()
         {
-            Solve(numbOfElements, left, right, middle);
+            Solve(numbOfElements, PegType.Left, PegType.Right, PegType.Middle);
         }
 
-        private void Solve(int bottomDisk, Stack<int> left, Stack<int> right, Stack<int> middle)
+        private void Solve(int bottomDisk, PegType left, PegType right, PegType middle)
         {
             if (bottomDisk == 1)
             {
-                right.Push(left.Pop());
-                this.step.Source = Peg.Left;
-                this.step.Target = Peg.Right;
+                this.step.Source = left;
+                this.step.Target = right;
                 LocalDataBase.Steps.Add(this.step);
             }
             else
             {
                 Solve(bottomDisk - 1, left, middle, right);
 
-                right.Push(left.Pop());
-
-                this.step.Source = Peg.Left;
-                this.step.Target = Peg.Middle;
+                this.step.Source = left;
+                this.step.Target = right;
                 LocalDataBase.Steps.Add(this.step);
 
                 Solve(bottomDisk - 1, middle, right, left);
