@@ -10,6 +10,8 @@
 
         public const char FADE_BLOCK_3 = '░';
 
+        public const char EMPTY_BLOCK = ' ';
+
         public const char UP_BLOCK = '▀';
 
         public const char DOWN_BLOCK = '▄';

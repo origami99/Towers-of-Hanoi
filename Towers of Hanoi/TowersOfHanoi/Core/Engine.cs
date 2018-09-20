@@ -48,7 +48,7 @@ namespace TowersOfHanoi.Core
         {
             Console.Title = "Towers of Hanoi";
 
-            // Console.CursorVisible = false;
+            Console.CursorVisible = false;
 
             Console.WindowWidth = Constants.CONSOLE_WIDTH;
             Console.BufferWidth = Constants.CONSOLE_WIDTH;
