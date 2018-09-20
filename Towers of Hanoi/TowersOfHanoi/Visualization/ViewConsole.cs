@@ -82,10 +82,15 @@ namespace TowersOfHanoi.Visualization
                     }
 
                 }
+                // set cursor in bottom left corner.
+                Console.SetCursorPosition(0, Console.WindowHeight - 1);
 
                 //Console.ReadKey(true);
                 Thread.Sleep(Constants.SLEEP_TIME);
             }
+
+            // set cursor in bottom left corner
+            Console.SetCursorPosition(0, Console.WindowHeight - 1);
         }
     }
 }

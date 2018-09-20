@@ -1,4 +1,5 @@
 ﻿using System;
+using TowersOfHanoi.DataBase;
 using TowersOfHanoi.Globals;
 using TowersOfHanoi.Visualization;
 
@@ -32,7 +33,7 @@ namespace TowersOfHanoi.Core
             Input.ReadInt();
 
             // 1. Invokes the puzzle solver
-            var test = new Solver(4);
+            var test = new Solver(LocalDataBase.DiskCounts);
             test.Execute();
 
             // 2. Invokes the visualisation
