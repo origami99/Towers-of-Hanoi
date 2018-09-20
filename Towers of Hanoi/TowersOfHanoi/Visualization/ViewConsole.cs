@@ -13,6 +13,10 @@ namespace TowersOfHanoi.Visualization
     {
         private static readonly int pegRow = 3;
 
+        private static int stepCount = 0;
+
+        private static int actionDisk;
+
         private static readonly int pegHeight = LocalDataBase.DiskCounts + 1;
 
         private static List<Peg> Pegs = new List<Peg>()
@@ -22,12 +26,11 @@ namespace TowersOfHanoi.Visualization
             new Peg(new Position(pegRow, Constants.MAX_PEGS * 5 + 5), new List<int>(), PegType.Right)
         };
 
-        private static int StepCount = 0;
-
         public static void Print()
         {
             DrawPegs();
             DrawDisks();
+            PrintPoints();
 
             foreach (Step step in LocalDataBase.Steps)
             {
@@ -52,6 +55,8 @@ namespace TowersOfHanoi.Visualization
 
         private static void DrawDisks()
         {
+            // TODO: Refactorate this method
+
             for (int i = 0; i < Pegs.Count; i++)
             {
                 int counter = 0;
@@ -69,13 +74,13 @@ namespace TowersOfHanoi.Visualization
 
                     int currDisc = Pegs[i].Disks[counter];
                     Console.SetCursorPosition(Pegs[i].TopPivot.Col - currDisc, row);
-                    Console.Write(new string(Chars.DOWN_BLOCK, currDisc * 2 + 1));
+                    Console.Write(new string(Chars.FULFILLED_BLOCK, currDisc * 2 + 1));
 
                     counter++;
                 }
             }
 
-            Thread.Sleep(Constants.SLEEP_TIME);
+            Thread.Sleep(Constants.STEP_SLEEP_TIME);
         }
 
         private static void DrawStep(Step step)
@@ -85,9 +90,31 @@ namespace TowersOfHanoi.Visualization
 
             EraseDiskInSource(sourcePeg);
             AddDiskInTarget(targetPeg);
+            PrintPoints();
 
             //Console.ReadKey(true);
-            Thread.Sleep(Constants.SLEEP_TIME);
+            Thread.Sleep(Constants.STEP_SLEEP_TIME);
+        }
+
+        private static void EraseDiskInSource(Peg sourcePeg)
+        {
+            int cursorCol = sourcePeg.TopPivot.Col - actionDisk;
+            int cursorRow = pegRow + pegHeight - sourcePeg.Disks.Count - 1;
+
+            char[] fadeBlocks = { Chars.FULFILLED_BLOCK, Chars.FADE_BLOCK_1, Chars.FADE_BLOCK_2, Chars.FADE_BLOCK_3, Chars.EMPTY_BLOCK };
+
+            // TODO: make the fade effect decreasing the speed
+            foreach (char fadeBlock in fadeBlocks)
+            {
+                Thread.Sleep(Constants.FADE_SLEEP_TIME);
+
+                Console.SetCursorPosition(cursorCol, cursorRow);
+
+                Console.Write(new string(fadeBlock, actionDisk * 2 + 1));
+            }
+
+            Console.SetCursorPosition(cursorCol + actionDisk, cursorRow);
+            Console.Write(Chars.VERTICAL_STICK);
         }
 
         private static void AddDiskInTarget(Peg targetPeg)
@@ -97,19 +124,16 @@ namespace TowersOfHanoi.Visualization
             int cursorCol = targetPeg.TopPivot.Col - currDisk;
             int cursorRow = pegRow + pegHeight - targetPeg.Disks.Count;
 
-            Console.SetCursorPosition(cursorCol, cursorRow);
+            char[] fadeBlocks = { Chars.EMPTY_BLOCK, Chars.FADE_BLOCK_3, Chars.FADE_BLOCK_2, Chars.FADE_BLOCK_1, Chars.FULFILLED_BLOCK };
 
-            Console.Write(new string(Chars.DOWN_BLOCK, currDisk * 2 + 1));
-        }
+            foreach (char fadeBlock in fadeBlocks)
+            {
+                Thread.Sleep(Constants.FADE_SLEEP_TIME);
 
-        private static void EraseDiskInSource(Peg sourcePeg)
-        {
-            int cursorCol = sourcePeg.TopPivot.Col - LocalDataBase.DiskCounts;
-            int cursorRow = pegRow + pegHeight - sourcePeg.Disks.Count - 1;
+                Console.SetCursorPosition(cursorCol, cursorRow);
 
-            Console.SetCursorPosition(cursorCol, cursorRow);
-
-            Console.Write("{0}{1}{0}", new string(' ', LocalDataBase.DiskCounts), Chars.VERTICAL_STICK);
+                Console.Write(new string(fadeBlock, actionDisk * 2 + 1));
+            }
         }
 
         private static void PerformStep(Step step)
@@ -117,10 +141,21 @@ namespace TowersOfHanoi.Visualization
             Peg sourcePeg = Pegs.Single(p => p.Type == step.Source); // ref
             Peg targetPeg = Pegs.Single(p => p.Type == step.Target); // ref
 
-            int actionDisk = sourcePeg.PopDisk();
+            actionDisk = sourcePeg.PopDisk();
             targetPeg.AddDisk(actionDisk);
 
-            StepCount++;
+            stepCount++;
+        }
+
+        private static void PrintPoints()
+        {
+            string text = $"   Steps left: {LocalDataBase.Steps.Count - stepCount}";
+
+            int cursorRow = Constants.CONSOLE_HEIGHT - 2;
+            int cursorCol = Constants.CONSOLE_WIDTH - text.Length - 1;
+            Console.SetCursorPosition(cursorCol, cursorRow);
+
+            Console.Write(text);
         }
     }
 }
