@@ -6,12 +6,7 @@ namespace TowersOfHanoi
     {
         public static void Main()
         {
-           // Engine.Instance.Start();
-
-            var test = new Solver(5);
-
-            test.Execute();
-            
+           Engine.Instance.Start();            
         }
     }
 }
