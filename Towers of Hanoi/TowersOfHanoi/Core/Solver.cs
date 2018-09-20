@@ -48,8 +48,8 @@ namespace TowersOfHanoi.Core
                 newIndex = CanMoveOnPosition(direction, fromIndex);
             }
 
-            this.step.Source = (Peg)fromIndex;
-            this.step.Target = (Peg)newIndex;
+            this.step.Source = (PegType)fromIndex;
+            this.step.Target = (PegType)newIndex;
             LocalDataBase.Steps.Add(this.step);
 
             previusElement = newIndex;

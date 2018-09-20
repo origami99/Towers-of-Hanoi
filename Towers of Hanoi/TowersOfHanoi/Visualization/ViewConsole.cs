@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using TowersOfHanoi.Common;
 using TowersOfHanoi.DataBase;
 using TowersOfHanoi.Globals;
 using TowersOfHanoi.Models;
@@ -14,18 +15,11 @@ namespace TowersOfHanoi.Visualization
 
         private static readonly int pegHeight = LocalDataBase.DiskCounts + 1;
 
-        private static List<Position> PegUpPivots = new List<Position>()
+        private static List<Peg> Pegs = new List<Peg>()
         {
-            new Position(pegRow, Constants.MAX_PEGS + 1),
-            new Position(pegRow, Constants.MAX_PEGS * 3 + 3),
-            new Position(pegRow, Constants.MAX_PEGS * 5 + 5)
-        };
-
-        private static List<List<int>> PegDisks = new List<List<int>>()
-        {
-            Enumerable.Range(1, LocalDataBase.DiskCounts).Reverse().ToList(),
-            new List<int>(),
-            new List<int>()
+            new Peg(new Position(pegRow, Constants.MAX_PEGS + 1), Enumerable.Range(1, LocalDataBase.DiskCounts).Reverse().ToList(), PegType.Left),
+            new Peg(new Position(pegRow, Constants.MAX_PEGS * 3 + 3), new List<int>(), PegType.Middle),
+            new Peg(new Position(pegRow, Constants.MAX_PEGS * 5 + 5), new List<int>(), PegType.Right)
         };
 
         private static int StepCount = 0;
@@ -33,18 +27,18 @@ namespace TowersOfHanoi.Visualization
         public static void Print()
         {
             DrawPegs();
-
             DrawDisks();
+
             foreach (Step step in LocalDataBase.Steps)
             {
                 PerformStep(step);
-                DrawDisks();
+                DrawStep(step);
             }
         }
 
         private static void DrawPegs()
         {
-            foreach (Position pivot in PegUpPivots)
+            foreach (Position pivot in Pegs.Select(x => x.TopPivot))
             {
                 for (int row = pivot.Row; row < pivot.Row + pegHeight; row++)
                 {
@@ -58,7 +52,7 @@ namespace TowersOfHanoi.Visualization
 
         private static void DrawDisks()
         {
-            for (int i = 0; i < PegDisks.Count; i++)
+            for (int i = 0; i < Pegs.Count; i++)
             {
                 int counter = 0;
                 int startRow = pegRow + pegHeight - 1;
@@ -66,34 +60,65 @@ namespace TowersOfHanoi.Visualization
 
                 for (int row = startRow; row >= endRow; row--)
                 {
-                    if (counter >= PegDisks[i].Count)
+                    if (counter >= Pegs[i].Disks.Count)
                     {
-                        Console.SetCursorPosition(PegUpPivots[i].Col - LocalDataBase.DiskCounts, row);
+                        Console.SetCursorPosition(Pegs[i].TopPivot.Col - LocalDataBase.DiskCounts, row);
                         Console.Write("{0}{1}{0}", new string(' ', LocalDataBase.DiskCounts), Chars.VERTICAL_STICK);
                         continue;
                     }
 
-                    int currDisc = PegDisks[i][counter];
-                    Console.SetCursorPosition(PegUpPivots[i].Col - currDisc, row);
+                    int currDisc = Pegs[i].Disks[counter];
+                    Console.SetCursorPosition(Pegs[i].TopPivot.Col - currDisc, row);
                     Console.Write(new string(Chars.DOWN_BLOCK, currDisc * 2 + 1));
 
                     counter++;
                 }
             }
 
+            Thread.Sleep(Constants.SLEEP_TIME);
+        }
+
+        private static void DrawStep(Step step)
+        {
+            Peg sourcePeg = Pegs.Single(p => p.Type == step.Source); // ref
+            Peg targetPeg = Pegs.Single(p => p.Type == step.Target); // ref
+
+            EraseDiskInSource(sourcePeg);
+            AddDiskInTarget(targetPeg);
+
             //Console.ReadKey(true);
             Thread.Sleep(Constants.SLEEP_TIME);
         }
 
+        private static void AddDiskInTarget(Peg targetPeg)
+        {
+            int currDisk = targetPeg.Disks.Last();
+
+            int cursorCol = targetPeg.TopPivot.Col - currDisk;
+            int cursorRow = pegRow + pegHeight - targetPeg.Disks.Count;
+
+            Console.SetCursorPosition(cursorCol, cursorRow);
+
+            Console.Write(new string(Chars.DOWN_BLOCK, currDisk * 2 + 1));
+        }
+
+        private static void EraseDiskInSource(Peg sourcePeg)
+        {
+            int cursorCol = sourcePeg.TopPivot.Col - LocalDataBase.DiskCounts;
+            int cursorRow = pegRow + pegHeight - sourcePeg.Disks.Count - 1;
+
+            Console.SetCursorPosition(cursorCol, cursorRow);
+
+            Console.Write("{0}{1}{0}", new string(' ', LocalDataBase.DiskCounts), Chars.VERTICAL_STICK);
+        }
+
         private static void PerformStep(Step step)
         {
-            var sourcePeg = PegDisks[(int)step.Source]; // ref
-            var targetPeg = PegDisks[(int)step.Target]; // ref
+            Peg sourcePeg = Pegs.Single(p => p.Type == step.Source); // ref
+            Peg targetPeg = Pegs.Single(p => p.Type == step.Target); // ref
 
-            int element = sourcePeg.Last();
-            sourcePeg.RemoveAt(sourcePeg.Count - 1);
-
-            targetPeg.Add(element);
+            int actionDisk = sourcePeg.PopDisk();
+            targetPeg.AddDisk(actionDisk);
 
             StepCount++;
         }

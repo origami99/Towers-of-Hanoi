@@ -8,6 +8,12 @@ namespace TowersOfHanoi.Models
         private int row;
         private int col;
 
+        public Position(Position position)
+        {
+            this.Row = position.Row;
+            this.Col = position.Col;
+        }
+
         public Position(int row, int col)
         {
             this.Row = row;
