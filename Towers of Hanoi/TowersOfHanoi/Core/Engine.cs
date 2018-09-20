@@ -34,7 +34,7 @@ namespace TowersOfHanoi.Core
             // Read input
             Input.ReadInt();
 
-            // 1. Invokes the puzzle solver
+            // Invokes the puzzle solver
             var test = new SolverRecursive(LocalDataBase.DiskCounts);
             test.Execute();
 

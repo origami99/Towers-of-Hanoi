@@ -1,9 +1,9 @@
-﻿using System;
-using TowersOfHanoi.Common;
+﻿using TowersOfHanoi.Common;
+using TowersOfHanoi.Contracts;
 
 namespace TowersOfHanoi.Models
 {
-    public struct Step
+    public struct Step : IStep
     {
         public PegType Source { get; set; }
 

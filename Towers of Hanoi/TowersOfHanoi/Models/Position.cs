@@ -1,9 +1,10 @@
 ﻿using System;
+using TowersOfHanoi.Contracts;
 using TowersOfHanoi.Globals;
 
 namespace TowersOfHanoi.Models
 {
-    public class Position
+    public class Position : IPosition
     {
         private int row;
         private int col;

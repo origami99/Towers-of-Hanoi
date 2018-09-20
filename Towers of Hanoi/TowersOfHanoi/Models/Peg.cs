@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using TowersOfHanoi.Common;
+using TowersOfHanoi.Contracts;
 
 namespace TowersOfHanoi.Models
 {
-    public class Peg
+    public class Peg : IPeg
     {
         private readonly Position topPivot;
         private List<Disk> disks;
@@ -16,14 +17,6 @@ namespace TowersOfHanoi.Models
             this.Type = type;
         }
 
-        public List<Disk> Disks
-        {
-            get
-            {
-                return this.disks;
-            }
-        }
-
         public Position TopPivot
         {
             get
@@ -32,7 +25,15 @@ namespace TowersOfHanoi.Models
             }
         }
 
-        public PegType Type { get; set; }
+        public List<Disk> Disks
+        {
+            get
+            {
+                return this.disks;
+            }
+        }
+
+        public PegType Type { get; }
 
         public void AddDisk(Disk disk)
         {

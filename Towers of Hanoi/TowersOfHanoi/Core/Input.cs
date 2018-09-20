@@ -31,7 +31,7 @@ namespace TowersOfHanoi.Core
 
             int n = int.Parse(Console.ReadLine());
 
-            discsCount = n;
+            DiscsCount = n;
         }
     }
 }
