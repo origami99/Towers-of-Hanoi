@@ -1,40 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TowersOfHanoi.Common;
 using TowersOfHanoi.DataBase;
 using TowersOfHanoi.Models;
 
 namespace TowersOfHanoi.Core
 {
-    public class Solver
+    public class SolverIterative
     {
         private int previusElement = -1;
         private List<Stack<int>> pegs = new List<Stack<int>>();
         private Step step = new Step();
 
-        private const int moveLeft = -1;
-        private const int moveRight = 1;
+        private int numbOfElements;
 
-        private int n;
-
-        public Solver(int n)
+        public SolverIterative(int n)
         {
-            this.n = n;
-            pegs.Add(new Stack<int>());
+            this.numbOfElements = n;
+            pegs.Add(new Stack<int>(Enumerable.Range(1, n).Reverse()));
             pegs.Add(new Stack<int>());
             pegs.Add(new Stack<int>());
         }
 
         public void Execute()
         {
-            PreparePegLeft();
-
-            Solve(n % 2 == 0 ? 1 : -1 );
+            Solve(numbOfElements % 2 == 0 ? 1 : -1 );
         }
 
         private void Solve(int direction)
         {
-            if (pegs[2].Count == n)
+            if (pegs[2].Count == numbOfElements)
             {
                 return;
             }
@@ -145,14 +141,6 @@ namespace TowersOfHanoi.Core
             }
 
             return 2;
-        }
-
-        private void PreparePegLeft()
-        {
-            for (int i = n; i > 0; i--)
-            {
-                pegs[0].Push(i);
-            }
         }
     }
 }
