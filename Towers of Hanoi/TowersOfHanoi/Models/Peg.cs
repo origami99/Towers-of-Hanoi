@@ -7,16 +7,16 @@ namespace TowersOfHanoi.Models
     public class Peg
     {
         private readonly Position topPivot;
-        private List<int> disks;
+        private List<Disk> disks;
 
-        public Peg(Position topPivot, List<int> disks, PegType type)
+        public Peg(Position topPivot, List<Disk> disks, PegType type)
         {
             this.topPivot = topPivot;
             this.disks = disks;
             this.Type = type;
         }
 
-        public List<int> Disks
+        public List<Disk> Disks
         {
             get
             {
@@ -34,19 +34,19 @@ namespace TowersOfHanoi.Models
 
         public PegType Type { get; set; }
 
-        public void AddDisk(int disk)
+        public void AddDisk(Disk disk)
         {
             disks.Add(disk);
         }
 
-        public int PopDisk()
+        public Disk PopDisk()
         {
             if (disks.Count == 0)
                 throw new ArgumentException("There are no disks on this peg");
 
             int lastIndex = disks.Count - 1;
 
-            int element = disks[lastIndex];
+            Disk element = disks[lastIndex];
 
             disks.RemoveAt(lastIndex);
 
