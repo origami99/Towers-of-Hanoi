@@ -1,6 +1,6 @@
 ﻿namespace TowersOfHanoi.Common
 {
-    public enum Peg
+    public enum PegType
     {
         Left = 0,
         Middle = 1,

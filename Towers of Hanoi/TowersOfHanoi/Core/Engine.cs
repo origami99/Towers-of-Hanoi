@@ -28,21 +28,27 @@ namespace TowersOfHanoi.Core
 
         public void Start()
         {
+            // Set intial console settings
             IntilizeSettings();
 
+            // Read input
             Input.ReadInt();
 
             // 1. Invokes the puzzle solver
             var test = new SolverIterative(LocalDataBase.DiskCounts);
             test.Execute();
 
-            // 2. Invokes the visualisation
+            // Invokes the visualisation
             ViewConsole.Print();
+
+            Console.ReadKey(true);
         }
 
         public void IntilizeSettings()
         {
             Console.Title = "Towers of Hanoi";
+
+            // Console.CursorVisible = false;
 
             Console.WindowWidth = Constants.CONSOLE_WIDTH;
             Console.BufferWidth = Constants.CONSOLE_WIDTH;
