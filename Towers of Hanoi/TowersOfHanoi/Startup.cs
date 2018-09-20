@@ -8,7 +8,7 @@ namespace TowersOfHanoi
         {
            // Engine.Instance.Start();
 
-            var test = new Solver(4);
+            var test = new Solver(5);
 
             test.Execute();
             

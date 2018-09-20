@@ -8,7 +8,7 @@ namespace TowersOfHanoi.Core
 {
     public class Solver
     {
-        private int previusElement = 0;
+        private int previusElement = -1;
         private List<Stack<int>> pegs = new List<Stack<int>>();
         private Step step = new Step();
 
@@ -29,14 +29,7 @@ namespace TowersOfHanoi.Core
         {
             PreparePegLeft();
 
-            if (n % 2 != 0)
-            {
-                Solve(moveLeft);
-            }
-            else
-            {
-                Solve(moveRight);
-            }
+            Solve(n % 2 == 0 ? 1 : -1 );
         }
 
         private void Solve(int direction)
@@ -44,11 +37,6 @@ namespace TowersOfHanoi.Core
             if (pegs[2].Count == n)
             {
                 return;
-            }
-
-            if (LocalDataBase.Steps == null)
-            {
-                previusElement = 0;
             }
 
             int fromIndex = FindBiggest();
@@ -79,7 +67,7 @@ namespace TowersOfHanoi.Core
 
             for (int i = 0; i < length; i++)
             {
-                int nextIndex = Math.Abs(fromPosition + direction) % length;
+                int nextIndex = Math.Abs(fromPosition + length + direction) % length;
                 if (pegs[nextIndex].Count == 0)
                 {
                     return nextIndex;
@@ -91,7 +79,6 @@ namespace TowersOfHanoi.Core
 
                 direction += direction;
             }
-
 
             return newPosition;
         }
