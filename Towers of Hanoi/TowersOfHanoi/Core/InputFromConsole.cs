@@ -1,18 +1,19 @@
 ﻿using System;
+using TowersOfHanoi.DataBase;
 using TowersOfHanoi.Globals;
 
 namespace TowersOfHanoi.Core
 {
-    public static class Input
+    public class InputFromConsole : IInputData
     {
-        private static int discsCount = 0;
+        private int discsCount = 0;
 
-        public static int DiscsCount
+        public int DiscsCount
         {
             get
             {
-                if (discsCount == 0)
-                    throw new ArgumentException($"Discs count is not set yet. Invoke the ReadInt() method first");
+                //if (discsCount == 0)
+                //    throw new ArgumentException($"Discs count is not set yet. Invoke the ReadInt() method first");
 
                 return discsCount;
             }
@@ -25,13 +26,13 @@ namespace TowersOfHanoi.Core
             }
         }
 
-        public static void ReadInt()
+        public void ReadInt()
         {
             Console.WriteLine($"Input number between {Constants.MIN_PEGS} and {Constants.MAX_PEGS}:");
 
             int n = int.Parse(Console.ReadLine());
 
-            DiscsCount = n;
+            this.DiscsCount = n;
         }
     }
 }

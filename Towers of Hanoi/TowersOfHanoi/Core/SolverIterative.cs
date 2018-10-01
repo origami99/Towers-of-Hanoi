@@ -7,24 +7,26 @@ using TowersOfHanoi.Models;
 
 namespace TowersOfHanoi.Core
 {
-    public class SolverIterative
+    public class SolverIterative : ISolver
     {
         private int previusElement = -1;
         private List<Stack<int>> pegs = new List<Stack<int>>();
         private Step step = new Step();
 
         private int numbOfElements;
+        private readonly IDataBase dataBase;
 
-        public SolverIterative(int n)
+        public SolverIterative(IDataBase dataBase)
         {
-            this.numbOfElements = n;
-            pegs.Add(new Stack<int>(Enumerable.Range(1, n).Reverse()));
-            pegs.Add(new Stack<int>());
-            pegs.Add(new Stack<int>());
+            this.dataBase = dataBase;
         }
 
         public void Execute()
         {
+            this.numbOfElements = dataBase.DiskCounts;
+            pegs.Add(new Stack<int>(Enumerable.Range(1, this.numbOfElements).Reverse()));
+            pegs.Add(new Stack<int>());
+            pegs.Add(new Stack<int>());
             Solve(numbOfElements % 2 == 0 ? 1 : -1 );
         }
 
@@ -46,7 +48,7 @@ namespace TowersOfHanoi.Core
 
             this.step.Source = (PegType)fromIndex;
             this.step.Target = (PegType)newIndex;
-            LocalDataBase.Steps.Add(this.step);
+            this.dataBase.Steps.Add(this.step);
 
             previusElement = newIndex;
 

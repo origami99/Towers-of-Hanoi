@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using TowersOfHanoi.Models;
-using System.Linq;
+﻿using TowersOfHanoi.Models;
 using TowersOfHanoi.DataBase;
 using TowersOfHanoi.Common;
 
 namespace TowersOfHanoi.Core
 {
-    class SolverRecursive
+    public class SolverRecursive : ISolver
     {
-
+        private readonly IDataBase dataBase;
         private Step step = new Step();
         private int numbOfElements;
 
-        public SolverRecursive(int n)
+        public SolverRecursive(IDataBase dataBase)
         {
-            this.numbOfElements = n;
+            this.dataBase = dataBase;
         }
 
         public void Execute()
         {
+            this.numbOfElements = dataBase.DiskCounts;
             Solve(numbOfElements, PegType.Left, PegType.Right, PegType.Middle);
         }
 
@@ -29,7 +27,7 @@ namespace TowersOfHanoi.Core
             {
                 this.step.Source = left;
                 this.step.Target = right;
-                LocalDataBase.Steps.Add(this.step);
+                this.dataBase.Steps.Add(this.step);
             }
             else
             {
@@ -37,7 +35,7 @@ namespace TowersOfHanoi.Core
 
                 this.step.Source = left;
                 this.step.Target = right;
-                LocalDataBase.Steps.Add(this.step);
+                this.dataBase.Steps.Add(this.step);
 
                 Solve(bottomDisk - 1, middle, right, left);
             }

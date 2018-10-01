@@ -10,8 +10,8 @@
 
         public const int MAX_PEGS = 10;
 
-        public const int STEP_SLEEP_TIME = 150;
+        public const int STEP_SLEEP_TIME = 125;
 
-        public const int FADE_SLEEP_TIME = 90;
+        public const int FADE_SLEEP_TIME = 75;
     }
 }

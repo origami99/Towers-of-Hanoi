@@ -4,18 +4,18 @@ using TowersOfHanoi.Models;
 
 namespace TowersOfHanoi.DataBase
 {
-    public static class LocalDataBase
+    public class LocalDataBase : IDataBase
     {
-        private static List<Step> steps = new List<Step>();
-        private static int diskCounts = Input.DiscsCount;
+        private List<Step> steps = new List<Step>();
+        private int diskCounts;
 
-        public static int DiskCounts
+        public int DiskCounts
         {
             get => diskCounts;
             set => diskCounts = value;
         }
 
-        public static List<Step> Steps
+        public List<Step> Steps
         {
             get => steps;
             set => steps = value;

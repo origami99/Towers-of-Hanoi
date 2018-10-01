@@ -5,56 +5,44 @@ using TowersOfHanoi.Visualization;
 
 namespace TowersOfHanoi.Core
 {
-    public class Engine
+    public class Engine : IEngine
     {
-        private static Engine instance;
+        private readonly IApplicationSettings appSetings;
+        private readonly ISolver solver;
+        private readonly IInputData inputData;
+        private readonly IVisualization visualization;
+        private  IDataBase dataBase;
 
-        private Engine()
+        public Engine(IApplicationSettings appSetings,
+            ISolver solver,
+            IInputData inputData,
+            IVisualization visualization,
+            IDataBase dataBase)
         {
-        }
-
-        public static Engine Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    return instance = new Engine();
-                }
-
-                return instance;
-            }
+            this.appSetings = appSetings;
+            this.solver = solver;
+            this.inputData = inputData;
+            this.visualization = visualization;
+            this.dataBase = dataBase;
         }
 
         public void Start()
         {
-            // Set intial console settings
-            IntilizeSettings();
+            // Set initial console settings
+            this.appSetings.IntilizeSettings();
 
             // Read input
-            Input.ReadInt();
+            this.inputData.ReadInt();
+            this.dataBase.DiskCounts = inputData.DiscsCount;
 
             // Invokes the puzzle solver
-            var test = new SolverRecursive(LocalDataBase.DiskCounts);
-            test.Execute();
+            this.solver.Execute();
 
-            // Invokes the visualisation
-            ViewConsole.Print();
+            // Invokes the visualization
+            this.visualization.Print();
 
+            // TODO disconnect from Console
             Console.ReadKey(true);
-        }
-
-        public void IntilizeSettings()
-        {
-            Console.Title = "Towers of Hanoi";
-
-            Console.CursorVisible = false;
-
-            Console.WindowWidth = Constants.CONSOLE_WIDTH;
-            Console.BufferWidth = Constants.CONSOLE_WIDTH;
-
-            Console.WindowHeight = Constants.CONSOLE_HEIGHT;
-            Console.BufferHeight = Constants.CONSOLE_HEIGHT;
         }
     }
 }
