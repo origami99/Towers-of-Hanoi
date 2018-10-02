@@ -12,8 +12,8 @@ namespace TowersOfHanoi.Core
         {
             get
             {
-                //if (discsCount == 0)
-                //    throw new ArgumentException($"Discs count is not set yet. Invoke the ReadInt() method first");
+                if (discsCount == 0)
+                    throw new ArgumentException($"Discs count is not set yet. Invoke the ReadInt() method first");
 
                 return discsCount;
             }
